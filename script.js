@@ -97,7 +97,13 @@ result.addEventListener("click", function() {
     add = operators.indexOf("+");
   }
 
-  input.innerHTML = numbers[0].toFixed(3); // displaying the output
+  if(numbers[0]=="NaN"){
+      input.innerHTML = "ERROR"
+  }else if(numbers[0]=="Infinity"){
+    input.innerHTML = "ERROR"
+  }else{
+     input.innerHTML = numbers[0].toFixed(3); // displaying the output
+  }
 
   resultDisplayed = true; // turning flag if result is displayed
 });
