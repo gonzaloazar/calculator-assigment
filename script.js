@@ -96,12 +96,12 @@ result.addEventListener("click", function() {
     operators.splice(add, 1);
     add = operators.indexOf("+");
   }
-
-  if(numbers[0]==="NaN"){
-      input.innerHTML = "ERROR"
-  }else{
-     input.innerHTML = numbers[0].toFixed(3); // displaying the output
+  
+  input.innerHTML = numbers[0].toFixed(3);// displaying the output
+  if(input.innerHTML==="NaN"){
+    input.innerHTML="error"
   }
+
 
   resultDisplayed = true; // turning flag if result is displayed
 });
