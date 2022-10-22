@@ -97,7 +97,7 @@ result.addEventListener("click", function() {
     add = operators.indexOf("+");
   }
 
-  if(numbers[0]=="NaN"){
+  if(numbers[0]==="NaN"){
       input.innerHTML = "ERROR"
   }else{
      input.innerHTML = numbers[0].toFixed(3); // displaying the output
