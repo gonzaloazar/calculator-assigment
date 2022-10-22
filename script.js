@@ -99,8 +99,6 @@ result.addEventListener("click", function() {
 
   if(numbers[0]=="NaN"){
       input.innerHTML = "ERROR"
-  }else if(numbers[0]=="Infinity"){
-    input.innerHTML = "ERROR"
   }else{
      input.innerHTML = numbers[0].toFixed(3); // displaying the output
   }
