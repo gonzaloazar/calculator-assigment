@@ -1,5 +1,5 @@
 "use strict";
-var input = document.getElementById('input'), 
+let input = document.getElementById('input'), 
   number = document.querySelectorAll('.numbers div'), 
   operator = document.querySelectorAll('.operators div'), 
   result = document.getElementById('result'), 
@@ -7,14 +7,15 @@ var input = document.getElementById('input'),
   resultDisplayed = false; // flag to keep an eye on what output is displayed
 
 // adding click handlers to number buttons
-for (var i = 0; i < number.length; i++) {
+for (let i = 0; i < number.length; i++) {
   number[i].addEventListener("click", function(e) {
 
    
-    var currentString = input.innerHTML;
-    var lastChar = currentString[currentString.length - 1];
-  
-    if (resultDisplayed === false) {
+    let currentString = input.innerHTML;
+    let lastChar = currentString[currentString.length - 1];
+    if(currentString[0]==0 && lastChar==0){
+        input.innerHTML=currentString[0];
+    }else if (resultDisplayed === false) {
       input.innerHTML += e.target.innerHTML;
     } else if (resultDisplayed === true && lastChar === "+" || lastChar === "-" || lastChar === "×" || lastChar === "÷") {
       // if result is currently displayed and user pressed an operator
@@ -33,15 +34,16 @@ for (var i = 0; i < number.length; i++) {
 }
 
 // adding click handlers to operator buttons
-for (var i = 0; i < operator.length; i++) {
+for (let i = 0; i < operator.length; i++) {
   operator[i].addEventListener("click", function(e) {
 
     // storing current input string and its last character in variables - used later
-    var currentString = input.innerHTML;
-    var lastChar = currentString[currentString.length - 1];
+    let currentString = input.innerHTML;
+    let lastChar = currentString[currentString.length - 1];
 
     // if last character entered is an operator, replace it with the currently pressed one
-    if (lastChar === "+" || lastChar === "-" || lastChar === "×" || lastChar === "÷") {
+    
+    if (lastChar === "+" || lastChar === "-" || lastChar === "×" || lastChar === "÷"||lastChar===".") {
       var newString = currentString.substring(0, currentString.length - 1) + e.target.innerHTML;
       input.innerHTML = newString;
     } else if (currentString.length == 0) {
@@ -54,26 +56,35 @@ for (var i = 0; i < operator.length; i++) {
 
   });
 }
+function isInteger(N) {
+    let X = Math.floor(N);
+    let temp = N - X;
 
+    if (temp > 0)
+    {
+        return false;
+    }
+    return true;
+}
 // on click of 'equal' button
 result.addEventListener("click", function() {
 
   // this is the string that we will be processing eg. -10+26+33-56*34/23
-  var inputString = input.innerHTML;
+  let inputString = input.innerHTML;
 
   // forming an array of numbers. eg for above string it will be: numbers = ["10", "26", "33", "56", "34", "23"]
-  var numbers = inputString.split(/\+|\-|\×|\÷/g);
+  let numbers = inputString.split(/\+|\-|\×|\÷/g);
 
   // forming an array of operators. for above string it will be: operators = ["+", "+", "-", "*", "/"]
   // first we replace all the numbers and dot with empty string and then split
-  var operators = inputString.replace(/[0-9]|\./g, "").split("");
+  let operators = inputString.replace(/[0-9]|\./g, "").split("");
 
 
-  var divide = operators.indexOf("÷");
+  let divide = operators.indexOf("÷");
   while (divide != -1) {
     numbers.splice(divide, 2, numbers[divide] / numbers[divide + 1]);
     operators.splice(divide, 1);
-    divide = operators.indexOf("÷");
+    divide = operators.indexOf("÷");    
   }
 
   var multiply = operators.indexOf("×");
@@ -83,30 +94,32 @@ result.addEventListener("click", function() {
     multiply = operators.indexOf("×");
   }
 
-  var subtract = operators.indexOf("-");
+  let subtract = operators.indexOf("-");
   while (subtract != -1) {
     numbers.splice(subtract, 2, numbers[subtract] - numbers[subtract + 1]);
     operators.splice(subtract, 1);
     subtract = operators.indexOf("-");
   }
 
-  var add = operators.indexOf("+");
+  let add = operators.indexOf("+");
   while (add != -1) {
     numbers.splice(add, 2, parseFloat(numbers[add]) + parseFloat(numbers[add + 1]));
     operators.splice(add, 1);
     add = operators.indexOf("+");
   }
   
-  input.innerHTML = numbers[0].toFixed(3);// displaying the output
-  if(input.innerHTML==="NaN"){
-    input.innerHTML="error"
-  }
+    if(numbers[0]=="Infinity"){
+        input.innerHTML='MATH ERROR';    // displaying an error message in case user divides something by 0
+    }else if(!isInteger(numbers[0])){ 
+        input.innerHTML = numbers[0].toFixed(3); // displaying the output, with a maximum of 3 caracters after .
+    }else{
+        input.innerHTML = numbers[0] // displaying the normal output if it isn't a float
+    }
 
-
-  resultDisplayed = true; // turning flag if result is displayed
+    resultDisplayed = true; // turning flag if result is displayed
 });
 
 // clearing the input on press of clear
 clear.addEventListener("click", function() {
   input.innerHTML = "";
-})
+})  
