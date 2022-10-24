@@ -68,6 +68,9 @@ body {
   
   .leftPanel {
     display: flex;
+    width: 75%;
+    margin: 0 auto;
+    flex-flow: column-reverse;
   }
   
   .numbers div {
